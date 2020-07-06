@@ -1,0 +1,15 @@
+---
+kind: pipeline
+name: backend
+
+steps:
+- name: publish  
+  image: plugins/docker
+  settings:
+   repo: synopscl/test-lem-back
+   username:
+      from_secret: docker_username
+   password:
+      from_secret: docker_password
+   dockerfile: Dockerfile
+   tags: ${DRONE_BUILD_NUMBER}

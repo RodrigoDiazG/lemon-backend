@@ -1,0 +1,17 @@
+---
+kind: pipeline
+type: docker
+name: backend
+
+steps:
+- name: publish  
+  image: plugins/ecr
+  settings:
+    access_key:
+      from_secret: aws_access_key_id
+    secret_key:
+      from_secret: aws_secret_access_key
+    repo: backend
+    registry: 929642878762.dkr.ecr.sa-east-1.amazonaws.com
+    region: sa-east-1
+    dockerfile: backend/Dockerfile
