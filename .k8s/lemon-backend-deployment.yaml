@@ -1,0 +1,42 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: lemon-backend
+  labels:
+    app: lemon-backend
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 5000
+      targetPort: 5000
+  selector:
+    app: lemon-backend
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lemon-backend
+spec:
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  selector:
+    matchLabels:
+      app: lemon-backend
+  template:
+    metadata:
+      labels:
+        app: lemon-backend
+    spec:
+      containers:
+        - name: lemon-backend
+          image: CONTAINER_IMAGE
+          securityContext:
+            privileged: false
+            readOnlyRootFilesystem: true
+            allowPrivilegeEscalation: false
+          ports:
+            - containerPort: 5000
