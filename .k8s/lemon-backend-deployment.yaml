@@ -1,32 +1,12 @@
-apiVersion: v1
-kind: Service
-metadata:
-  name: lemon-backend-api
-  namespace: lemontech
-  labels:
-    app: lemon-backend
-spec:
-  type: LoadBalancer
-  ports:
-    - port: 5001
-      targetPort: 5000
-  selector:
-    app: lemon-backend
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: lemon-backend
   namespace: lemontech
-  label:
+  labels:
    app: lemon-backend
 spec:
-  replicas: 2
-  strategy:
-    type: RollingUpdate
-    rollingUpdate:
-      maxUnavailable: 1
-      maxSurge: 1
+  replicas: 1
   selector:
     matchLabels:
       app: lemon-backend
@@ -37,12 +17,14 @@ spec:
     spec:
       containers:
         - name: lemon-backend
-          image: CONTAINER_IMAGE
-          securityContext:
-            runAsUser: 2000
-            readOnlyRootFilesystem: true
+          image: synopscl/test-lem-back:12
           ports:
             - containerPort: 5000
+          resources:
+            limits:
+              cpu: 500m
+            requests:
+              cpu: 200m  
 ---
 apiVersion: autoscaling/v1
 kind: HorizontalPodAutoscaler
