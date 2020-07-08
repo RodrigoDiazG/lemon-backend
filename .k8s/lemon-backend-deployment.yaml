@@ -47,7 +47,7 @@ spec:
     spec:
       containers:
         - name: lemon-backend
-          image: synopscl/test-lem-back:16
+          image: CONTAINER_IMAGE
           ports:
             - containerPort: 5000
           resources:
