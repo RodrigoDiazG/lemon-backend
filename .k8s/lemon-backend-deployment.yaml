@@ -1,3 +1,33 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: lemon-backend-api
+  namespace: lemontech
+  labels:
+    app: lemon-backend
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 5001
+      targetPort: 5000
+  selector:
+    app: lemon-backend
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: lemon-backend-srv
+  namespace: lemontech
+  labels:
+    app: lemon-backend
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: 5000
+  selector:
+    app: lemon-backend
+---    
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -17,7 +47,7 @@ spec:
     spec:
       containers:
         - name: lemon-backend
-          image: synopscl/test-lem-back:14
+          image: synopscl/test-lem-back:16
           ports:
             - containerPort: 5000
           resources:
@@ -37,5 +67,5 @@ spec:
     kind: Deployment
     name: lemon-backend
   minReplicas: 1
-  maxReplicas: 5
+  maxReplicas: 3
   targetCPUUtilizationPercentage: 10            

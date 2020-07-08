@@ -14,3 +14,17 @@ steps:
       from_secret: docker_password
    dockerfile: Dockerfile
    tags: ${DRONE_BUILD_NUMBER}
+
+- name: install
+  image: synopscl/lemon-aws-deploy:1.1
+  PROYECTO: "lemon-backend"
+  environment:
+     IMAGE: "synopscl/test-lem-back"
+     TAG: ${DRONE_BUILD_NUMBER}
+     PROYECTO: "lemon-backend"
+     AWS_ACCESS_KEY_ID:
+       from_secret: AWS_ACCESS_KEY_ID
+     AWS_SECRET_ACCESS_KEY:
+       from_secret: AWS_SECRET_ACCESS_KEY
+  commands:
+     - "/lemontech/run-update.sh"
